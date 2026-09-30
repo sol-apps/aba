@@ -1,0 +1,17 @@
+{
+  "title": "ABA receipts",
+  "slug": "aba",
+  "description": "Where the ABA iPhone app sends a donation receipt when someone ends a block early, and where the developer's reply to it is written.",
+  "access": {
+    "mode": "public",
+    "anonymous": [
+      "GET /"
+    ]
+  },
+  "runtime_shape": "datastore",
+  "data_reach": "own",
+  "blast_radius": "low — isolated to its own subdomain and runtime",
+  "scopes": [],
+  "tier": "green",
+  "rationale": "Owner-built app with its own PocketBase datastore and no outbound access."
+}
