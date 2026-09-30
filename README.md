@@ -10,15 +10,11 @@ description: Where the ABA iPhone app sends a donation receipt when someone ends
 Where the ABA iPhone app sends a donation receipt when someone ends a block
 early, and where the developer's reply to it is written.
 
-**Live:** https://aba.solhann.net — once deployed; until then the app queues
-receipts on the phone and sends them when this answers.
+**Live:** https://aba.solhann.net
 
-This folder is written as a solhann.net platform app: `spec.json`,
-`pb_migrations/` and `pb_hooks/`, pinned to PocketBase 0.39.5. It lives in the
-ABA repo for now, next to the app that talks to it; deploying it means making
-it the `sol-apps/aba` repo (see below). The two identity files
-(`pb_hooks/identity.pb.js`, `pb_migrations/1756540000_identity.js`) are the
-platform template's, copied unchanged.
+A solhann.net platform app, public access, PocketBase 0.39.5. The app that
+talks to it is the ABA iPhone app (its `Donation/ReceiptServer.swift`); the
+identity files and `pb-auth.js` are the platform template's, unchanged.
 
 ## What it holds
 
@@ -48,29 +44,19 @@ Anonymous surface, as `spec.json` declares it: `GET /`, `create:receipts`,
 
 ## Run it locally
 
-From this folder, with the platform's pinned binary:
-
-```sh
-export GREENLIGHT_IDENTITY_MODE=local
-~/.local/bin/pocketbase superuser upsert admin@solhann.net '<a local password>' --dir .pb_data
-~/.local/bin/pocketbase serve --dir=.pb_data --publicDir=. --hooksDir=pb_hooks \
-  --migrationsDir=pb_migrations --http=127.0.0.1:8090
-```
-
-Or `pb-dev`, once this is its own checkout named `aba`. Point the Demo build at
-it and queue a sample receipt without going through the donation gate:
+`pb-dev` from this checkout serves it at http://127.0.0.1:8090. Point ABA's
+Demo build at it and queue a sample receipt without going through the donation
+gate:
 
 ```sh
 xcrun simctl launch <udid> net.solhann.ABA.demo -aba-server http://127.0.0.1:8090 -aba-receipt
 ```
 
 Reply in the dashboard at http://127.0.0.1:8090/_/ (receipts ▸ the record ▸
-verdict, reply ▸ Save), then bring ABA back to the front.
+verdict, reply ▸ Save), then bring ABA back to the front. On production it's
+https://aba.solhann.net/_/, as `admin@solhann.net` with the password prod
+generated (`/etc/pocketbase/aba.superuser`, root only).
 
-## Deploy
-
-Not done yet. On the platform that means: `create-app.sh --backend pocketbase
---access public aba "ABA receipts" "…"` to make `sol-apps/aba` and provision
-the instance, replace its scaffold with this folder's files, push, then
-`pb-backups aba`. The app already points at https://aba.solhann.net
-(`Collector.server`).
+The scaffold's example `pb_hooks/main.pb.js` is gone on purpose: its
+commented-out `$http.send` and `cronAdd` examples fail the lint for an app
+whose spec declares neither.
