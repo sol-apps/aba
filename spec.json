@@ -4,14 +4,12 @@
   "description": "Where the ABA iPhone app sends a donation receipt when someone ends a block early, and where the developer's reply to it is written.",
   "access": {
     "mode": "public",
-    "anonymous": [
-      "GET /"
-    ]
+    "anonymous": ["GET /", "create:receipts", "list:receipts", "view:receipts"]
   },
   "runtime_shape": "datastore",
   "data_reach": "own",
   "blast_radius": "low — isolated to its own subdomain and runtime",
   "scopes": [],
   "tier": "green",
-  "rationale": "Owner-built app with its own PocketBase datastore and no outbound access."
+  "rationale": "Its own PocketBase datastore and nothing else: no outbound calls, no schedule, no sign-in. The app sends receipts anonymously under a per-install key it keeps secret, reads back only its own, and the verdict and reply are written by the owner in the dashboard. The screenshots can show a donor's name or email, so they are protected files, never served without a token."
 }
