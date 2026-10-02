@@ -36,11 +36,17 @@ sign-up, and nobody using ABA should need one.
   Receipts in Settings.
 - **Screenshots** are protected files: never served without a file token.
   They can show a donor's name or email.
+- **Kept for 24 hours.** `pb_hooks/cleanup.pb.js` runs hourly and deletes
+  every receipt older than a day, screenshot and all, so one lives 24 to 25
+  hours. One nobody reviewed in that time counts as accepted. ABA keeps its own
+  copy of each receipt and of any verdict or reply it already read, so the
+  phone loses nothing when the server forgets.
 - **Retries** are safe: `proof` (the app's id for the receipt) is unique, so a
   second upload is refused as a duplicate, which the app counts as sent.
 
 Anonymous surface, as `spec.json` declares it: `GET /`, `create:receipts`,
-`list:receipts`, `view:receipts`.
+`list:receipts`, `view:receipts`. Its one schedule is the clean-up, which is
+why `runtime_shape` is `scheduler`.
 
 ## Run it locally
 
