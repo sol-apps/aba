@@ -12,8 +12,8 @@
  * and the reply are written by the developer in the dashboard (updateRule null:
  * superusers only) and can't be set by the sender.
  *
- * These three operations are the app's whole anonymous surface, declared in
- * spec.json as create:receipts, list:receipts and view:receipts.
+ * These three operations — create, list and view — are everything anyone but the
+ * developer can do here.
  */
 migrate((app) => {
   const own = "@request.headers.x_aba_install != '' && install = @request.headers.x_aba_install";

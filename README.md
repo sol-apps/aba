@@ -12,9 +12,8 @@ early, and where the developer's reply to it is written.
 
 **Live:** https://aba.solhann.net
 
-A solhann.net platform app, public access, PocketBase 0.39.5. The app that
-talks to it is the ABA iPhone app (its `Donation/ReceiptServer.swift`); the
-identity files and `pb-auth.js` are the platform template's, unchanged.
+A solhann.net app with its own PocketBase (0.39.5). Nobody signs in. The app that
+talks to it is the ABA iPhone app (its `Donation/ReceiptServer.swift`).
 
 ## What it holds
 
@@ -44,9 +43,9 @@ sign-up, and nobody using ABA should need one.
 - **Retries** are safe: `proof` (the app's id for the receipt) is unique, so a
   second upload is refused as a duplicate, which the app counts as sent.
 
-Anonymous surface, as `spec.json` declares it: `GET /`, `create:receipts`,
-`list:receipts`, `view:receipts`. Its one schedule is the clean-up, which is
-why `runtime_shape` is `scheduler`.
+What anyone can do without the developer's login: load the page, send a receipt,
+and list or view the receipts sent with their own install key. Its one schedule
+is the clean-up.
 
 ## Run it locally
 
